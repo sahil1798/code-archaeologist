@@ -1,0 +1,1030 @@
+{
+  "repository": "/home/sahil1798/projects/code-archaeologist",
+  "excavationDate": "2025-12-09T14:56:57.615Z",
+  "durationSeconds": 38.199,
+  "modelUsed": "gemini-2.5-flash-lite",
+  "stats": {
+    "totalFiles": 7,
+    "analyzedFiles": 0,
+    "totalCommits": 1,
+    "totalAuthors": 1,
+    "languages": {
+      "typescript": 7
+    },
+    "topAuthors": [
+      {
+        "name": "sahil1798",
+        "email": "23ecuos153@ddu.ac.in",
+        "commits": 1,
+        "filesChanged": 0,
+        "additions": 0,
+        "deletions": 0,
+        "firstCommit": "2025-12-09T14:55:34+00:00",
+        "lastCommit": "2025-12-09T14:55:34+00:00"
+      }
+    ],
+    "dateRange": {
+      "first": "2025-12-09T14:55:34+00:00",
+      "last": "2025-12-09T14:55:34+00:00"
+    }
+  },
+  "files": [
+    {
+      "path": "src/agents/excavator.ts",
+      "language": "typescript",
+      "metrics": {
+        "lines": 871,
+        "complexity": 118,
+        "maintainability": 50,
+        "definitions": [
+          "function:main",
+          "function:duration",
+          "function:context",
+          "function:ask",
+          "class:ExcavatorAgent",
+          "class:nodes",
+          "interface:FileMetrics",
+          "interface:AuthorStats",
+          "interface:FileAnalysis",
+          "interface:RepositoryStats",
+          "interface:ExcavationReport",
+          "interface:ExcavationOptions",
+          "type:as"
+        ],
+        "imports": [
+          "simple-git",
+          "dotenv",
+          "fs",
+          "path",
+          "readline"
+        ]
+      },
+      "authors": [
+        "sahil1798"
+      ],
+      "commitCount": 1,
+      "lastModified": "2025-12-09T14:55:34+00:00",
+      "analysis": {
+        "summary": "This TypeScript code defines an `ExcavatorAgent` class designed to perform deep archaeological analysis of a Git repository. It leverages `simple-git` for Git operations and a `GeminiSynthesisEngine` for AI-powered code analysis, aiming to extract metrics, track contributions, and generate a comprehensive excavation report.",
+        "businessContext": "This code exists to provide a sophisticated tool for understanding the history, complexity, and maintainability of software projects. It enables businesses to gain insights into their codebase, identify technical debt, assess risks, and track developer contributions, ultimately leading to better project management and informed decision-making.",
+        "technicalRationale": "The code is structured into a class (`ExcavatorAgent`) for modularity and reusability. It separates concerns by using external libraries for Git operations (`simple-git`) and AI analysis (`gemini-client`). The use of interfaces (`FileMetrics`, `AuthorStats`, etc.) provides strong typing and clear data structures for the excavation report. The `excavate` method orchestrates a multi-phase analysis, starting with repository statistics and progressing to file-level analysis, with options to skip AI analysis for testing or performance reasons.",
+        "dependencies": [
+          "simple-git",
+          "dotenv",
+          "fs",
+          "path",
+          "readline",
+          "../lib/gemini-client.js",
+          "../lib/utils.js"
+        ],
+        "risks": [
+          "Reliance on external AI model (`GeminiSynthesisEngine`) can lead to performance issues, cost implications, or changes in AI model behavior affecting analysis quality.",
+          "The complexity of the analysis might lead to long execution times for large repositories.",
+          "Potential for errors in parsing Git history or file content if the repository structure is unusual or malformed.",
+          "The `skipAnalysis` flag, while useful for testing, could lead to incomplete reports if not used judiciously.",
+          "The `maxFiles` and `maxCommitsPerFile` options might limit the depth of analysis, potentially missing critical information in larger projects."
+        ],
+        "recommendations": [
+          "Implement robust error handling for all Git operations and file system interactions.",
+          "Consider adding caching mechanisms for frequently analyzed data to improve performance.",
+          "Provide clearer feedback to the user regarding the progress and status of the excavation, especially for long-running operations.",
+          "Document the specific metrics used for complexity and maintainability calculations.",
+          "Explore options for parallelizing file analysis to speed up the process.",
+          "Ensure the `GeminiSynthesisEngine` is configured with appropriate API keys and resource limits."
+        ],
+        "confidenceScore": 0.9
+      }
+    },
+    {
+      "path": "src/agents/query.ts",
+      "language": "typescript",
+      "metrics": {
+        "lines": 175,
+        "complexity": 17,
+        "maintainability": 75,
+        "definitions": [
+          "function:main",
+          "function:ask",
+          "class:QueryTool",
+          "type:a"
+        ],
+        "imports": [
+          "../lib/gemini-client.js",
+          "../lib/utils.js",
+          "simple-git",
+          "path",
+          "readline",
+          "dotenv"
+        ]
+      },
+      "authors": [
+        "sahil1798"
+      ],
+      "commitCount": 1,
+      "lastModified": "2025-12-09T14:55:34+00:00",
+      "analysis": {
+        "summary": "This TypeScript code implements a 'QueryTool' that allows users to ask questions about code within a Git repository. It leverages the Gemini API for natural language processing and simple-git for repository interaction, providing both file-specific and repository-wide querying capabilities in an interactive command-line interface.",
+        "businessContext": "This tool exists to accelerate code understanding and exploration for developers, especially when dealing with large or unfamiliar codebases. It aims to reduce the time spent manually searching for information, understanding code logic, or recalling commit history, thereby improving developer productivity and onboarding.",
+        "technicalRationale": "The code is structured into a class `QueryTool` for modularity and reusability. It uses `GeminiSynthesisEngine` for AI-powered responses, `readFileSafe` and `getLanguage` for file handling, and `simple-git` for Git operations. The `interactiveMode` provides a user-friendly CLI experience with context management (current file) and chat history. The `queryFile` method prioritizes recent commits and a truncated code snippet for context, while `queryRepository` provides a broader overview of files and recent commits. Chat history is managed to keep context relevant and within limits.",
+        "dependencies": [
+          "gemini-client",
+          "utils",
+          "simple-git",
+          "path",
+          "readline",
+          "dotenv"
+        ],
+        "risks": [
+          "Reliance on external AI API (Gemini) can lead to performance issues, cost fluctuations, or API changes breaking functionality.",
+          "Hardcoded limits (e.g., 4000 characters for code, 50 files, 20 commits, 20 chat history items) might be insufficient for complex queries or large files.",
+          "Error handling for Git operations is minimal (empty catch blocks), which could mask underlying issues.",
+          "Security implications if the tool is used with sensitive codebases, as code and commit data are sent to the Gemini API.",
+          "Potential for inaccurate or hallucinated responses from the AI model, leading to misunderstandings.",
+          "The `readFileSafe` function is not provided, but its implementation is critical for robustness."
+        ],
+        "recommendations": [
+          "Implement more robust error handling for Git operations and file reading.",
+          "Consider making context limits (code snippet length, file count, commit count, history size) configurable.",
+          "Add explicit handling for API errors from Gemini and provide informative feedback to the user.",
+          "Explore options for local or on-premise AI models if data privacy is a major concern.",
+          "Document the exact behavior and limitations of `readFileSafe` and `getLanguage`.",
+          "Add a mechanism to handle larger files or repositories more effectively, perhaps through summarization or more intelligent context selection.",
+          "Provide clear instructions on how to set up and authenticate with the Gemini API."
+        ],
+        "confidenceScore": 0.9
+      }
+    },
+    {
+      "path": "src/api/server.ts",
+      "language": "typescript",
+      "metrics": {
+        "lines": 288,
+        "complexity": 47,
+        "maintainability": 75,
+        "definitions": [
+          "function:handleStartExcavation",
+          "function:runExcavation",
+          "function:handleGetJob",
+          "function:handleGetReport",
+          "function:handleListJobs",
+          "function:handleHealth",
+          "function:parseBody",
+          "function:handleRequest",
+          "function:startServer",
+          "interface:APIResponse",
+          "interface:ExcavationJob"
+        ],
+        "imports": [
+          "http",
+          "url",
+          "../agents/excavator.js",
+          "dotenv",
+          "fs",
+          "path"
+        ]
+      },
+      "authors": [
+        "sahil1798"
+      ],
+      "commitCount": 1,
+      "lastModified": "2025-12-09T14:55:34+00:00",
+      "analysis": {
+        "summary": "This TypeScript code defines a REST API server for a code archaeology tool. It provides endpoints to initiate code excavations, monitor their status, retrieve detailed reports, and query a knowledge graph. The server uses in-memory storage for job tracking, which is intended to be replaced with a database in production.",
+        "businessContext": "This code exists to provide a programmatic interface for interacting with a code archaeology system. This allows other applications or services to trigger code analysis, monitor progress, and retrieve results, enabling automated code understanding, compliance checks, or legacy system analysis.",
+        "technicalRationale": "The code uses Node.js's built-in `http` module for creating the server, and `dotenv` for configuration. It defines clear TypeScript interfaces for API responses and job states, promoting type safety. Asynchronous operations for excavations are handled using `async/await` and background execution (`.catch`) to avoid blocking the main thread. In-memory storage (`Map`) is used for simplicity and rapid development, with a clear note about its production limitations. The API is structured with distinct handler functions for each endpoint, promoting modularity.",
+        "dependencies": [
+          "http",
+          "url",
+          "dotenv",
+          "fs",
+          "path",
+          "../agents/excavator.js"
+        ],
+        "risks": [
+          "In-memory storage will lead to data loss on server restart.",
+          "Lack of input validation beyond `repoPath` existence could lead to unexpected behavior or security vulnerabilities.",
+          "Error handling in `runExcavation` might not be robust enough for all potential `ExcavatorAgent` failures.",
+          "The `options` parameter in `handleStartExcavation` is cast to `any`, which bypasses type checking.",
+          "The `parseBody` function is incomplete, indicating potential issues with request body handling.",
+          "Scalability issues due to in-memory storage and single-threaded nature of Node.js for CPU-bound tasks if excavations are long-running."
+        ],
+        "recommendations": [
+          "Implement persistent storage (e.g., a database) for `jobs` to ensure data durability.",
+          "Add more comprehensive input validation for `repoPath` and `options` to prevent errors and security risks.",
+          "Refine error handling in `runExcavation` to capture and log more detailed error information.",
+          "Remove the `any` cast for `options` and define a more specific type for excavation options.",
+          "Complete the `parseBody` function and ensure robust handling of different request body types (e.g., JSON).",
+          "Consider using worker threads or a separate process for running excavations to avoid blocking the main event loop for long-running tasks."
+        ],
+        "confidenceScore": 0.9
+      }
+    },
+    {
+      "path": "src/lib/gemini-client.ts",
+      "language": "typescript",
+      "metrics": {
+        "lines": 658,
+        "complexity": 74,
+        "maintainability": 40,
+        "definitions": [
+          "function:getGeminiEngine",
+          "function:runTests",
+          "function:validateSession",
+          "class:GeminiSynthesisEngine",
+          "interface:CodeContext",
+          "interface:CommitInfo",
+          "interface:ArchaeologicalAnalysis",
+          "interface:KnowledgeGraphNode",
+          "interface:KnowledgeGraphEdge",
+          "interface:KnowledgeGraph",
+          "interface:TrainingDataPair"
+        ],
+        "imports": [
+          "@google/generative-ai",
+          "dotenv"
+        ]
+      },
+      "authors": [
+        "sahil1798"
+      ],
+      "commitCount": 1,
+      "lastModified": "2025-12-09T14:55:34+00:00",
+      "analysis": {
+        "summary": "This TypeScript code defines a `GeminiSynthesisEngine` class to interact with Google's Gemini generative AI models. It handles API key management, model discovery, and initialization, prioritizing specific model versions. The code also includes extensive type definitions for various data structures related to code analysis and knowledge graphs.",
+        "businessContext": "This code exists to enable developers to leverage Google's Gemini AI models for tasks such as code analysis, summarization, and potentially generating structured data like knowledge graphs. This can automate complex analysis, improve developer productivity, and provide deeper insights into codebases.",
+        "technicalRationale": "The code is structured to be a reusable engine for interacting with the Gemini API. It uses environment variables for API keys, implements retry logic for API calls (though not fully shown in the snippet), and prioritizes specific model names for consistent behavior. The extensive type definitions suggest a design aimed at handling complex, structured outputs from the AI, likely for further processing or visualization.",
+        "dependencies": [
+          "@google/generative-ai",
+          "dotenv",
+          "node-fetch"
+        ],
+        "risks": [
+          "Reliance on a specific API key (GOOGLE_AI_API_KEY) which could be compromised or expire.",
+          "Potential for API rate limiting or changes to the Gemini API that could break functionality.",
+          "The `MODEL_PRIORITY` list might become outdated as new Gemini models are released or older ones deprecated.",
+          "Error handling for API calls is present but might need to be more robust for production environments.",
+          "The `listAvailableModels` function relies on a direct HTTP call to the Gemini API, which could be subject to network issues or API changes."
+        ],
+        "recommendations": [
+          "Implement more sophisticated error handling and retry mechanisms for API calls.",
+          "Consider abstracting the API key management further, perhaps using a configuration service.",
+          "Regularly review and update the `MODEL_PRIORITY` list to reflect current Gemini model availability and performance.",
+          "Add comprehensive unit and integration tests for the `GeminiSynthesisEngine` class.",
+          "Document the expected input and output formats for the AI synthesis tasks clearly.",
+          "Explore using a more robust HTTP client library than the default `fetch` for better control over requests and responses."
+        ],
+        "confidenceScore": 0.9
+      }
+    },
+    {
+      "path": "src/lib/list-models.ts",
+      "language": "typescript",
+      "metrics": {
+        "lines": 49,
+        "complexity": 6,
+        "maintainability": 90,
+        "definitions": [
+          "function:listModels"
+        ],
+        "imports": [
+          "dotenv"
+        ]
+      },
+      "authors": [
+        "sahil1798"
+      ],
+      "commitCount": 1,
+      "lastModified": "2025-12-09T14:55:34+00:00",
+      "analysis": {
+        "summary": "This TypeScript code defines an asynchronous function `listModels` that fetches a list of available Google AI Gemini models. It retrieves an API key from environment variables, makes an HTTP GET request to the Google Generative Language API, and then prints the names and display names of models that support the `generateContent` method. The function is called immediately upon script execution.",
+        "businessContext": "This code exists to provide developers with a clear and easy way to discover which Gemini models are available for use with the `generateContent` API. This is crucial for applications that leverage generative AI, allowing developers to select the most appropriate model for their specific needs and ensuring they are using supported functionalities.",
+        "technicalRationale": "The code uses `dotenv` to manage the API key securely, preventing it from being hardcoded. It employs `fetch` for making HTTP requests to the Google API, which is a standard and modern approach. Error handling is implemented using a `try...catch` block to gracefully manage network or API-related issues. The filtering logic (`m.name.includes('gemini') && m.supportedGenerationMethods?.includes('generateContent')`) specifically targets Gemini models and ensures they are compatible with the intended generation method, making the output relevant to the likely use case of a `gemini-client.ts` file.",
+        "dependencies": [
+          "dotenv",
+          "node-fetch"
+        ],
+        "risks": [
+          "API key exposure if `.env` file is not properly secured.",
+          "Changes to the Google Generative Language API endpoint or response structure could break the code.",
+          "Hardcoding the API key would be a significant security risk.",
+          "The `any` type used for model data could lead to runtime errors if the API response schema changes unexpectedly."
+        ],
+        "recommendations": [
+          "Consider using a more specific type for the `model` object instead of `any` to improve type safety.",
+          "Implement more robust error handling, potentially distinguishing between network errors and API-specific errors.",
+          "Add unit tests to verify the filtering and output logic.",
+          "Document the expected format of the `.env` file and the `GOOGLE_AI_API_KEY` variable."
+        ],
+        "confidenceScore": 0.9
+      }
+    },
+    {
+      "path": "src/lib/utils.ts",
+      "language": "typescript",
+      "metrics": {
+        "lines": 325,
+        "complexity": 50,
+        "maintainability": 70,
+        "definitions": [
+          "function:getExtension",
+          "function:getLanguage",
+          "function:isSourceFile",
+          "function:shouldIgnorePath",
+          "function:readFileSafe",
+          "function:fileExists",
+          "function:truncate",
+          "function:extractDefinitions",
+          "function:extractImports",
+          "function:formatDuration",
+          "function:formatDate",
+          "function:progressBar",
+          "function:getSpinner",
+          "function:calculateComplexity",
+          "function:estimateMaintainability",
+          "class:names"
+        ],
+        "imports": [
+          "fs",
+          "path"
+        ]
+      },
+      "authors": [
+        "sahil1798"
+      ],
+      "commitCount": 1,
+      "lastModified": "2025-12-09T14:55:34+00:00",
+      "analysis": {
+        "summary": "This TypeScript file provides a collection of utility functions for a code archaeology project. It includes functions for file path manipulation (getting extensions, languages, checking if it's a source file, ignoring paths), safe file reading, and checking file existence. It also offers string utilities like truncation and a more complex function to extract definitions (functions, classes, interfaces, types) from code based on its language.",
+        "businessContext": "This code exists to support a tool or process that analyzes source code. The 'Code Archaeologist' likely refers to a system that needs to understand the structure, components, and relationships within a codebase. This utility library enables such a system to process files, identify relevant code elements, and potentially perform further analysis or reporting.",
+        "technicalRationale": "The code is structured into logical sections (File Utilities, String Utilities) for better organization. It leverages built-in Node.js modules (`fs`, `path`) for file system operations and string manipulation. Regular expressions are used for pattern matching to extract definitions, which is a common approach for simple static code analysis. Error handling is implemented in `readFileSafe` and `fileExists` to gracefully manage situations where files might not be accessible or exist. The `languageMap` and `sourceExtensions` arrays are clear mappings for identifying and categorizing code files.",
+        "dependencies": [
+          "fs",
+          "path"
+        ],
+        "risks": [
+          "The `extractDefinitions` function relies on regular expressions, which can be brittle and may not cover all edge cases or complex syntax variations in different language versions or frameworks. For example, it might miss dynamically defined functions or classes, or incorrectly parse code with unusual formatting.",
+          "The `shouldIgnorePath` function uses simple string inclusion, which could lead to false positives if a file or directory name coincidentally contains an ignored path string (e.g., a file named `my_node_modules_backup.js`).",
+          "The `languageMap` is not exhaustive and might miss less common but still relevant file extensions.",
+          "The `readFileSafe` function swallows all errors, which might mask underlying file system issues that could be important to diagnose."
+        ],
+        "recommendations": [
+          "For `extractDefinitions`, consider using dedicated parsing libraries (e.g., AST parsers like `acorn` for JavaScript/TypeScript, `tree-sitter` for multiple languages) for more robust and accurate code analysis, especially as the complexity of the codebase grows.",
+          "Refine `shouldIgnorePath` to use more precise path matching (e.g., checking against the full path segments or using glob patterns) to avoid false positives.",
+          "Expand the `languageMap` and `sourceExtensions` to include a wider range of programming languages and their common extensions.",
+          "In `readFileSafe`, consider logging the error or returning a more specific error type instead of `null` to provide better debugging information.",
+          "Add unit tests for all utility functions to ensure their correctness and prevent regressions."
+        ],
+        "confidenceScore": 0.9
+      }
+    },
+    {
+      "path": "src/orchestration/kestra-client.ts",
+      "language": "typescript",
+      "metrics": {
+        "lines": 412,
+        "complexity": 46,
+        "maintainability": 70,
+        "definitions": [
+          "function:main",
+          "class:KestraOrchestrator",
+          "interface:WorkflowExecution",
+          "interface:HumanReviewRequest"
+        ],
+        "imports": [
+          "axios",
+          "dotenv"
+        ]
+      },
+      "authors": [
+        "sahil1798"
+      ],
+      "commitCount": 1,
+      "lastModified": "2025-12-09T14:55:34+00:00",
+      "analysis": {
+        "summary": "This TypeScript code defines a client for interacting with the Kestra orchestration platform. It allows for the creation and management of workflows, specifically an 'excavation-saga' workflow designed to clone, analyze, and clean up code repositories, incorporating human-in-the-loop elements.",
+        "businessContext": "This code exists to automate and orchestrate complex, multi-stage code analysis tasks, such as in a software archaeology context. It enables long-running 'excavations' of codebases, handles parallel processing, and allows for human intervention at critical decision points, aligning with the 'Infinity Stones' theme of managing complex timelines and analyses.",
+        "technicalRationale": "The code uses the `axios` library to make HTTP requests to the Kestra API. It defines interfaces for Kestra's workflow and human review request objects. The `KestraOrchestrator` class encapsulates the logic for connecting to Kestra, ensuring namespaces exist, and creating/updating the 'excavation-saga' workflow using YAML definitions. Environment variables are used for configuration, and error handling is implemented for flow creation (e.g., handling 409 conflicts).",
+        "dependencies": [
+          "axios",
+          "dotenv"
+        ],
+        "risks": [
+          "Configuration errors in environment variables (KESTRA_URL, KESTRA_USERNAME, KESTRA_PASSWORD) could prevent connection.",
+          "Changes to the Kestra API endpoints or expected YAML structure could break the client.",
+          "The `rm -rf` command in the cleanup task could lead to unintended data loss if not carefully managed.",
+          "Security implications if Kestra credentials are not properly managed."
+        ],
+        "recommendations": [
+          "Implement more robust error handling and logging for API interactions.",
+          "Consider adding input validation for workflow parameters.",
+          "Explore using Kestra's SDK if available for a more type-safe and maintained integration.",
+          "Add comprehensive unit and integration tests for the `KestraOrchestrator` class.",
+          "Document the expected Kestra API version compatibility."
+        ],
+        "confidenceScore": 0.9
+      }
+    }
+  ],
+  "knowledgeGraph": {
+    "nodes": [
+      {
+        "id": "file:src/agents/excavator.ts",
+        "type": "file",
+        "label": "excavator.ts",
+        "metadata": {
+          "path": "src/agents/excavator.ts",
+          "language": "typescript",
+          "lines": 871,
+          "complexity": 118,
+          "maintainability": 50
+        }
+      },
+      {
+        "id": "function:src/agents/excavator.ts:main",
+        "type": "function",
+        "label": "main",
+        "metadata": {
+          "file": "src/agents/excavator.ts"
+        }
+      },
+      {
+        "id": "function:src/agents/excavator.ts:duration",
+        "type": "function",
+        "label": "duration",
+        "metadata": {
+          "file": "src/agents/excavator.ts"
+        }
+      },
+      {
+        "id": "function:src/agents/excavator.ts:context",
+        "type": "function",
+        "label": "context",
+        "metadata": {
+          "file": "src/agents/excavator.ts"
+        }
+      },
+      {
+        "id": "function:src/agents/excavator.ts:ask",
+        "type": "function",
+        "label": "ask",
+        "metadata": {
+          "file": "src/agents/excavator.ts"
+        }
+      },
+      {
+        "id": "class:src/agents/excavator.ts:ExcavatorAgent",
+        "type": "class",
+        "label": "ExcavatorAgent",
+        "metadata": {
+          "file": "src/agents/excavator.ts"
+        }
+      },
+      {
+        "id": "file:src/agents/query.ts",
+        "type": "file",
+        "label": "query.ts",
+        "metadata": {
+          "path": "src/agents/query.ts",
+          "language": "typescript",
+          "lines": 175,
+          "complexity": 17,
+          "maintainability": 75
+        }
+      },
+      {
+        "id": "function:src/agents/query.ts:main",
+        "type": "function",
+        "label": "main",
+        "metadata": {
+          "file": "src/agents/query.ts"
+        }
+      },
+      {
+        "id": "function:src/agents/query.ts:ask",
+        "type": "function",
+        "label": "ask",
+        "metadata": {
+          "file": "src/agents/query.ts"
+        }
+      },
+      {
+        "id": "class:src/agents/query.ts:QueryTool",
+        "type": "class",
+        "label": "QueryTool",
+        "metadata": {
+          "file": "src/agents/query.ts"
+        }
+      },
+      {
+        "id": "type:src/agents/query.ts:a",
+        "type": "type",
+        "label": "a",
+        "metadata": {
+          "file": "src/agents/query.ts"
+        }
+      },
+      {
+        "id": "file:src/api/server.ts",
+        "type": "file",
+        "label": "server.ts",
+        "metadata": {
+          "path": "src/api/server.ts",
+          "language": "typescript",
+          "lines": 288,
+          "complexity": 47,
+          "maintainability": 75
+        }
+      },
+      {
+        "id": "function:src/api/server.ts:handleStartExcavation",
+        "type": "function",
+        "label": "handleStartExcavation",
+        "metadata": {
+          "file": "src/api/server.ts"
+        }
+      },
+      {
+        "id": "function:src/api/server.ts:runExcavation",
+        "type": "function",
+        "label": "runExcavation",
+        "metadata": {
+          "file": "src/api/server.ts"
+        }
+      },
+      {
+        "id": "function:src/api/server.ts:handleGetJob",
+        "type": "function",
+        "label": "handleGetJob",
+        "metadata": {
+          "file": "src/api/server.ts"
+        }
+      },
+      {
+        "id": "function:src/api/server.ts:handleGetReport",
+        "type": "function",
+        "label": "handleGetReport",
+        "metadata": {
+          "file": "src/api/server.ts"
+        }
+      },
+      {
+        "id": "function:src/api/server.ts:handleListJobs",
+        "type": "function",
+        "label": "handleListJobs",
+        "metadata": {
+          "file": "src/api/server.ts"
+        }
+      },
+      {
+        "id": "file:src/lib/gemini-client.ts",
+        "type": "file",
+        "label": "gemini-client.ts",
+        "metadata": {
+          "path": "src/lib/gemini-client.ts",
+          "language": "typescript",
+          "lines": 658,
+          "complexity": 74,
+          "maintainability": 40
+        }
+      },
+      {
+        "id": "function:src/lib/gemini-client.ts:getGeminiEngine",
+        "type": "function",
+        "label": "getGeminiEngine",
+        "metadata": {
+          "file": "src/lib/gemini-client.ts"
+        }
+      },
+      {
+        "id": "function:src/lib/gemini-client.ts:runTests",
+        "type": "function",
+        "label": "runTests",
+        "metadata": {
+          "file": "src/lib/gemini-client.ts"
+        }
+      },
+      {
+        "id": "function:src/lib/gemini-client.ts:validateSession",
+        "type": "function",
+        "label": "validateSession",
+        "metadata": {
+          "file": "src/lib/gemini-client.ts"
+        }
+      },
+      {
+        "id": "class:src/lib/gemini-client.ts:GeminiSynthesisEngine",
+        "type": "class",
+        "label": "GeminiSynthesisEngine",
+        "metadata": {
+          "file": "src/lib/gemini-client.ts"
+        }
+      },
+      {
+        "id": "interface:src/lib/gemini-client.ts:CodeContext",
+        "type": "interface",
+        "label": "CodeContext",
+        "metadata": {
+          "file": "src/lib/gemini-client.ts"
+        }
+      },
+      {
+        "id": "file:src/lib/list-models.ts",
+        "type": "file",
+        "label": "list-models.ts",
+        "metadata": {
+          "path": "src/lib/list-models.ts",
+          "language": "typescript",
+          "lines": 49,
+          "complexity": 6,
+          "maintainability": 90
+        }
+      },
+      {
+        "id": "function:src/lib/list-models.ts:listModels",
+        "type": "function",
+        "label": "listModels",
+        "metadata": {
+          "file": "src/lib/list-models.ts"
+        }
+      },
+      {
+        "id": "file:src/lib/utils.ts",
+        "type": "file",
+        "label": "utils.ts",
+        "metadata": {
+          "path": "src/lib/utils.ts",
+          "language": "typescript",
+          "lines": 325,
+          "complexity": 50,
+          "maintainability": 70
+        }
+      },
+      {
+        "id": "function:src/lib/utils.ts:getExtension",
+        "type": "function",
+        "label": "getExtension",
+        "metadata": {
+          "file": "src/lib/utils.ts"
+        }
+      },
+      {
+        "id": "function:src/lib/utils.ts:getLanguage",
+        "type": "function",
+        "label": "getLanguage",
+        "metadata": {
+          "file": "src/lib/utils.ts"
+        }
+      },
+      {
+        "id": "function:src/lib/utils.ts:isSourceFile",
+        "type": "function",
+        "label": "isSourceFile",
+        "metadata": {
+          "file": "src/lib/utils.ts"
+        }
+      },
+      {
+        "id": "function:src/lib/utils.ts:shouldIgnorePath",
+        "type": "function",
+        "label": "shouldIgnorePath",
+        "metadata": {
+          "file": "src/lib/utils.ts"
+        }
+      },
+      {
+        "id": "function:src/lib/utils.ts:readFileSafe",
+        "type": "function",
+        "label": "readFileSafe",
+        "metadata": {
+          "file": "src/lib/utils.ts"
+        }
+      },
+      {
+        "id": "file:src/orchestration/kestra-client.ts",
+        "type": "file",
+        "label": "kestra-client.ts",
+        "metadata": {
+          "path": "src/orchestration/kestra-client.ts",
+          "language": "typescript",
+          "lines": 412,
+          "complexity": 46,
+          "maintainability": 70
+        }
+      },
+      {
+        "id": "function:src/orchestration/kestra-client.ts:main",
+        "type": "function",
+        "label": "main",
+        "metadata": {
+          "file": "src/orchestration/kestra-client.ts"
+        }
+      },
+      {
+        "id": "class:src/orchestration/kestra-client.ts:KestraOrchestrator",
+        "type": "class",
+        "label": "KestraOrchestrator",
+        "metadata": {
+          "file": "src/orchestration/kestra-client.ts"
+        }
+      },
+      {
+        "id": "interface:src/orchestration/kestra-client.ts:WorkflowExecution",
+        "type": "interface",
+        "label": "WorkflowExecution",
+        "metadata": {
+          "file": "src/orchestration/kestra-client.ts"
+        }
+      },
+      {
+        "id": "interface:src/orchestration/kestra-client.ts:HumanReviewRequest",
+        "type": "interface",
+        "label": "HumanReviewRequest",
+        "metadata": {
+          "file": "src/orchestration/kestra-client.ts"
+        }
+      },
+      {
+        "id": "author:sahil1798",
+        "type": "author",
+        "label": "sahil1798",
+        "metadata": {
+          "commits": 1,
+          "firstCommit": "2025-12-09T14:55:34+00:00",
+          "lastCommit": "2025-12-09T14:55:34+00:00"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "source": "file:src/agents/excavator.ts",
+        "target": "function:src/agents/excavator.ts:main",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/agents/excavator.ts",
+        "target": "function:src/agents/excavator.ts:duration",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/agents/excavator.ts",
+        "target": "function:src/agents/excavator.ts:context",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/agents/excavator.ts",
+        "target": "function:src/agents/excavator.ts:ask",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/agents/excavator.ts",
+        "target": "class:src/agents/excavator.ts:ExcavatorAgent",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/agents/query.ts",
+        "target": "function:src/agents/query.ts:main",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/agents/query.ts",
+        "target": "function:src/agents/query.ts:ask",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/agents/query.ts",
+        "target": "class:src/agents/query.ts:QueryTool",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/agents/query.ts",
+        "target": "type:src/agents/query.ts:a",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/api/server.ts",
+        "target": "function:src/api/server.ts:handleStartExcavation",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/api/server.ts",
+        "target": "function:src/api/server.ts:runExcavation",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/api/server.ts",
+        "target": "function:src/api/server.ts:handleGetJob",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/api/server.ts",
+        "target": "function:src/api/server.ts:handleGetReport",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/api/server.ts",
+        "target": "function:src/api/server.ts:handleListJobs",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/lib/gemini-client.ts",
+        "target": "function:src/lib/gemini-client.ts:getGeminiEngine",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/lib/gemini-client.ts",
+        "target": "function:src/lib/gemini-client.ts:runTests",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/lib/gemini-client.ts",
+        "target": "function:src/lib/gemini-client.ts:validateSession",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/lib/gemini-client.ts",
+        "target": "class:src/lib/gemini-client.ts:GeminiSynthesisEngine",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/lib/gemini-client.ts",
+        "target": "interface:src/lib/gemini-client.ts:CodeContext",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/lib/list-models.ts",
+        "target": "function:src/lib/list-models.ts:listModels",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/lib/utils.ts",
+        "target": "function:src/lib/utils.ts:getExtension",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/lib/utils.ts",
+        "target": "function:src/lib/utils.ts:getLanguage",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/lib/utils.ts",
+        "target": "function:src/lib/utils.ts:isSourceFile",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/lib/utils.ts",
+        "target": "function:src/lib/utils.ts:shouldIgnorePath",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/lib/utils.ts",
+        "target": "function:src/lib/utils.ts:readFileSafe",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/orchestration/kestra-client.ts",
+        "target": "function:src/orchestration/kestra-client.ts:main",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/orchestration/kestra-client.ts",
+        "target": "class:src/orchestration/kestra-client.ts:KestraOrchestrator",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/orchestration/kestra-client.ts",
+        "target": "interface:src/orchestration/kestra-client.ts:WorkflowExecution",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "file:src/orchestration/kestra-client.ts",
+        "target": "interface:src/orchestration/kestra-client.ts:HumanReviewRequest",
+        "relationship": "defines",
+        "weight": 1
+      },
+      {
+        "source": "author:sahil1798",
+        "target": "file:src/agents/excavator.ts",
+        "relationship": "authored",
+        "weight": 1
+      },
+      {
+        "source": "author:sahil1798",
+        "target": "file:src/agents/query.ts",
+        "relationship": "authored",
+        "weight": 1
+      },
+      {
+        "source": "author:sahil1798",
+        "target": "file:src/api/server.ts",
+        "relationship": "authored",
+        "weight": 1
+      },
+      {
+        "source": "author:sahil1798",
+        "target": "file:src/lib/gemini-client.ts",
+        "relationship": "authored",
+        "weight": 1
+      },
+      {
+        "source": "author:sahil1798",
+        "target": "file:src/lib/list-models.ts",
+        "relationship": "authored",
+        "weight": 1
+      },
+      {
+        "source": "author:sahil1798",
+        "target": "file:src/lib/utils.ts",
+        "relationship": "authored",
+        "weight": 1
+      },
+      {
+        "source": "author:sahil1798",
+        "target": "file:src/orchestration/kestra-client.ts",
+        "relationship": "authored",
+        "weight": 1
+      }
+    ],
+    "clusters": [
+      {
+        "name": "src/agents",
+        "nodeIds": [
+          "file:src/agents/excavator.ts",
+          "file:src/agents/query.ts"
+        ]
+      },
+      {
+        "name": "src/lib",
+        "nodeIds": [
+          "file:src/lib/gemini-client.ts",
+          "file:src/lib/list-models.ts",
+          "file:src/lib/utils.ts"
+        ]
+      }
+    ]
+  },
+  "insights": {
+    "businessDomains": [
+      "data-layer",
+      "api"
+    ],
+    "technicalDebt": [
+      "High complexity in src/agents/excavator.ts (complexity: 118)",
+      "High complexity in src/lib/gemini-client.ts (complexity: 74)",
+      "High complexity in src/lib/utils.ts (complexity: 50)"
+    ],
+    "riskAreas": [
+      "Reliance on external AI model (`GeminiSynthesisEngine`) can lead to performance issues, cost implications, or changes in AI model behavior affecting analysis quality.",
+      "The complexity of the analysis might lead to long execution times for large repositories.",
+      "Potential for errors in parsing Git history or file content if the repository structure is unusual or malformed.",
+      "The `skipAnalysis` flag, while useful for testing, could lead to incomplete reports if not used judiciously.",
+      "The `maxFiles` and `maxCommitsPerFile` options might limit the depth of analysis, potentially missing critical information in larger projects.",
+      "Reliance on external AI API (Gemini) can lead to performance issues, cost fluctuations, or API changes breaking functionality.",
+      "Hardcoded limits (e.g., 4000 characters for code, 50 files, 20 commits, 20 chat history items) might be insufficient for complex queries or large files.",
+      "Error handling for Git operations is minimal (empty catch blocks), which could mask underlying issues.",
+      "Security implications if the tool is used with sensitive codebases, as code and commit data are sent to the Gemini API.",
+      "Potential for inaccurate or hallucinated responses from the AI model, leading to misunderstandings."
+    ],
+    "keyDecisions": [
+      "excavator.ts: The code is structured into a class (`ExcavatorAgent`) for modularity and reusability. It separates ",
+      "query.ts: The code is structured into a class `QueryTool` for modularity and reusability. It uses `GeminiSynth",
+      "server.ts: The code uses Node.js's built-in `http` module for creating the server, and `dotenv` for configurati",
+      "gemini-client.ts: The code is structured to be a reusable engine for interacting with the Gemini API. It uses environm",
+      "list-models.ts: The code uses `dotenv` to manage the API key securely, preventing it from being hardcoded. It employ"
+    ],
+    "hotspots": [
+      "src/agents/excavator.ts (1 commits)",
+      "src/agents/query.ts (1 commits)",
+      "src/api/server.ts (1 commits)",
+      "src/lib/gemini-client.ts (1 commits)",
+      "src/lib/list-models.ts (1 commits)"
+    ]
+  }
+}
