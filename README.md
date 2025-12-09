@@ -3,7 +3,7 @@
 > Solving the "Why Does This Code Exist?" Crisis  
 > **AI Agents Assemble Hackathon 2025**
 
-[![Live Demo](https://img.shields.io/badge/Demo-Live-success)](YOUR_VERCEL_URL_HERE)
+[![Live Demo](https://img.shields.io/badge/Demo-Live-success)](https://code-archaeologist-79z0uewbj-harsh8818198s-projects.vercel.app/)
 [![API Status](https://img.shields.io/badge/API-Online-success)](http://localhost:3001/health)
 [![CodeRabbit](https://img.shields.io/badge/CodeRabbit-Active-purple)](https://coderabbit.ai)
 
@@ -34,7 +34,7 @@ This project qualifies for:
 
 ## 🚀 Live Demo
 
-- **Frontend**: [YOUR_VERCEL_URL_HERE]
+- **Frontend**: [https://code-archaeologist-79z0uewbj-harsh8818198s-projects.vercel.app/]
 - **API**: http://localhost:3001
 - **Kestra UI**: http://localhost:8080
 - **Sample Analysis**: [archaeological-report.json](./archaeological-report.json)
@@ -142,7 +142,7 @@ curl http://localhost:3001/api/jobs/{jobId}/report
 
 ### Web UI
 
-Visit [YOUR_VERCEL_URL]/excavate and paste a repository path or GitHub URL.
+Visit [https://code-archaeologist-79z0uewbj-harsh8818198s-projects.vercel.app/]/excavate and paste a repository path or GitHub URL.
 
 ---
 
@@ -258,7 +258,7 @@ json{
 - **Gemini SDK** - AI analysis
 
 ### AI (Gemini)
-- **Model**: gemini-1.5-pro
+- **Model**: gemini-2.5-flash
 - **Context Window**: 2M tokens (analyze entire repos)
 - **Multimodal**: Can analyze UI screenshots with code
 - **Cost**: Generous free tier
@@ -342,7 +342,7 @@ MIT License - see [LICENSE](./LICENSE)
 
 Built for AI Agents Assemble Hackathon 2025
 
-- **Your Name** - [GitHub](https://github.com/YOUR_USERNAME)
+- **Your Name** - [GitHub](https://github.com/Harsh8818198)
 
 ---
 
