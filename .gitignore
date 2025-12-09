@@ -36,3 +36,11 @@ data/*.jsonl
 
 # Reports
 archaeological-report.json
+
+node_modules/
+frontend/node_modules/
+venv/
+oumi-training/venv/
+__pycache__/
+*.pyc
+
