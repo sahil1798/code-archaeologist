@@ -1,0 +1,98 @@
+#!/bin/bash
+
+echo "🧪 Day 4 - Full Integration Test"
+echo "================================="
+echo ""
+
+cd ~/projects/code-archaeologist
+
+# Test 1: Environment
+echo "📦 Test 1: Environment variables"
+if [ -f .env ]; then
+    if grep -q "GOOGLE_AI_API_KEY=." .env && ! grep -q "GOOGLE_AI_API_KEY=$" .env; then
+        echo "   ✓ Gemini API key configured"
+    else
+        echo "   ✗ Gemini API key missing"
+        exit 1
+    fi
+fi
+
+# Test 2: Gemini Connection
+echo "🔮 Test 2: Gemini connection"
+timeout 10 pnpm run test:gemini > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+    echo "   ✓ Gemini connected"
+else
+    echo "   ✗ Gemini connection failed"
+    exit 1
+fi
+
+# Test 3: API Server
+echo "🚀 Test 3: API Server"
+pnpm run start &
+SERVER_PID=$!
+sleep 3
+
+HEALTH=$(curl -s http://localhost:3001/api/health 2>/dev/null)
+if echo "$HEALTH" | grep -q "healthy"; then
+    echo "   ✓ API server running"
+else
+    echo "   ✗ API server failed"
+    kill $SERVER_PID 2>/dev/null
+    exit 1
+fi
+
+# Test 4: Excavation
+echo "⛏️  Test 4: Running excavation"
+RESPONSE=$(curl -s -X POST http://localhost:3001/api/excavate \
+    -H "Content-Type: application/json" \
+    -d '{"repoPath": "'$(pwd)'", "options": {"maxFiles": 2, "skipAnalysis": true}}')
+
+if echo "$RESPONSE" | grep -q "jobId"; then
+    echo "   ✓ Excavation started"
+    JOB_ID=$(echo "$RESPONSE" | grep -o '"jobId":"[^"]*"' | cut -d'"' -f4)
+    echo "   Job ID: $JOB_ID"
+    
+    # Wait for completion
+    sleep 5
+    STATUS=$(curl -s "http://localhost:3001/api/jobs/$JOB_ID")
+    echo "   Status: $(echo "$STATUS" | grep -o '"status":"[^"]*"' | cut -d'"' -f4)"
+else
+    echo "   ✗ Excavation failed"
+    kill $SERVER_PID 2>/dev/null
+    exit 1
+fi
+
+kill $SERVER_PID 2>/dev/null
+
+# Test 5: Frontend
+echo "🎨 Test 5: Frontend"
+cd frontend
+if [ -f "app/page.tsx" ] && [ -f "app/excavate/page.tsx" ] && [ -f "app/results/[jobId]/page.tsx" ]; then
+    echo "   ✓ All pages exist"
+else
+    echo "   ✗ Missing pages"
+    exit 1
+fi
+
+# Test 6: Kestra
+echo "⚙️  Test 6: Kestra"
+KESTRA_STATUS=$(curl -s http://localhost:8080/api/v1/configs 2>/dev/null)
+if [ $? -eq 0 ]; then
+    echo "   ✓ Kestra running"
+else
+    echo "   ⚠️  Kestra not running (optional)"
+fi
+
+cd ..
+
+echo ""
+echo "================================="
+echo "✅ All critical tests passed!"
+echo ""
+echo "Next steps:"
+echo "  1. Deploy frontend: cd frontend && vercel --prod"
+echo "  2. Record demo video"
+echo "  3. Take screenshots"
+echo "  4. Update README with URLs"
+echo ""

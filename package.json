@@ -9,21 +9,24 @@
     "excavate": "npx tsx src/agents/excavator.ts",
     "query": "npx tsx src/agents/query.ts",
     "generate-training-data": "npx tsx src/lib/generate-training-data.ts",
-    "test:gemini": "npx tsx src/lib/gemini-client.ts",
+    "test:gemini": "tsx test-gemini.ts",
     "orchestrate": "npx tsx src/orchestration/kestra-client.ts"
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
     "@octokit/rest": "^20.1.0",
     "axios": "^1.7.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.0",
+    "express": "^5.2.1",
     "simple-git": "^3.25.0",
     "zod": "^3.23.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
     "@types/node": "^20.14.0",
     "tsx": "^4.15.0",
     "typescript": "^5.5.0"
   }
 }
-

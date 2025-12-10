@@ -56,6 +56,33 @@ export class GeminiSynthesisEngine {
   private modelName: string | null = null;
   private maxRetries = 3;
 
+  // ✅ MISSING METHODS FOR API SERVER
+  getModelName(): string | null {
+    return this.modelName;
+  }
+
+  isInitialized(): boolean {
+    return this.modelName !== null;
+  }
+
+  async chat(message: string): Promise<string> {
+    return this.generate(message);
+  }
+
+
+  // ✅ ADDED: Missing methods for API
+  getModelName(): string | null {
+    return this.modelName;
+  }
+
+  isInitialized(): boolean {
+    return this.modelName !== null;
+  }
+
+  async chat(message: string): Promise<string> {
+    return this.generate(message);
+  }
+
   // ----------------------------
   // ✅ MODEL DISCOVERY (NO 404s)
   // ----------------------------

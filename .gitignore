@@ -44,3 +44,5 @@ oumi-training/venv/
 __pycache__/
 *.pyc
 
+.vercel
+.env*.local
