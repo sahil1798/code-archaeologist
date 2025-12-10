@@ -3,7 +3,7 @@
 > Solving the "Why Does This Code Exist?" Crisis  
 > **AI Agents Assemble Hackathon 2025**
 
-[![Live Demo](https://img.shields.io/badge/Demo-Live-success)](https://code-archaeologist-79z0uewbj-harsh8818198s-projects.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Demo-Live-success)](https://code-archaeologist-1xa67unlu-harsh8818198s-projects.vercel.app/)
 [![API Status](https://img.shields.io/badge/API-Online-success)](http://localhost:3001/health)
 [![CodeRabbit](https://img.shields.io/badge/CodeRabbit-Active-purple)](https://coderabbit.ai)
 
@@ -34,7 +34,7 @@ This project qualifies for:
 
 ## 🚀 Live Demo
 
-- **Frontend**: [https://code-archaeologist-79z0uewbj-harsh8818198s-projects.vercel.app/]
+- **Frontend**: [https://vercel.com/harsh8818198s-projects/code-archaeologist/6h8neKjJgemRgSwA5iL3b4NkppBG]
 - **API**: http://localhost:3001
 - **Kestra UI**: http://localhost:8080
 - **Sample Analysis**: [archaeological-report.json](./archaeological-report.json)
@@ -142,7 +142,7 @@ curl http://localhost:3001/api/jobs/{jobId}/report
 
 ### Web UI
 
-Visit [https://code-archaeologist-79z0uewbj-harsh8818198s-projects.vercel.app/]/excavate and paste a repository path or GitHub URL.
+Visit [https://code-archaeologist-1xa67unlu-harsh8818198s-projects.vercel.app/]/excavate and paste a repository path or GitHub URL.
 
 ---
 
@@ -290,8 +290,8 @@ json{
 
 ### In Progress 🚧
 - [ ] Knowledge graph visualization (D3.js)
-- [ ] Real-time streaming to frontend
-- [ ] GitHub integration (analyze repos directly)
+- [x] Real-time streaming to frontend
+- [x] GitHub integration (analyze repos directly)
 
 ### Future 🔮
 - [ ] VS Code extension
