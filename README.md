@@ -12,7 +12,7 @@
 This project qualifies for:
 
 - ✅ **Infinity Build Award** ($10,000) - Full-stack AI agent system using Cline-inspired architecture + Kestra + Vercel
-- ✅ **Visionary Intelligence Award** ($3,000) - Google Gemini 1.5 Pro + Oumi fine-tuning infrastructure
+- ✅ **Visionary Intelligence Award** ($3,000) - Google Gemini 2.5 Flash + Oumi fine-tuning infrastructure
 - ✅ **Captain Code Award** ($2,000) - CodeRabbit automated code review
 
 **Total Potential: $15,000**
@@ -24,7 +24,7 @@ This project qualifies for:
 | Stone | Role | Status | Technology |
 |-------|------|--------|------------|
 | 🔵 **Excavator Agent** | The Builder | ✅ Complete | TypeScript + Gemini |
-| 🟡 **Gemini** | The Synthesis Engine | ✅ Active | Google Gemini 1.5 Pro (2M context) |
+| 🟡 **Gemini** | The Synthesis Engine | ✅ Active | Google Gemini 2.5 Flash (2M context) |
 | 🟣 **Kestra** | The Orchestrator | ✅ Running | Declarative workflows |
 | 🟠 **Oumi** | The Context Distiller | ⚙️ Configured | LoRA fine-tuning ready |
 | 🟢 **Vercel** | The Living Museum | ✅ Deployed | Next.js 14 + Tailwind |
@@ -480,7 +480,7 @@ KESTRA_URL=http://localhost:8080  # If Kestra is elsewhere
 ✅ Complete full-stack architecture
 
 ### Visionary Intelligence Award ($3,000)
-✅ Google Gemini 1.5 Pro integration  
+✅ Google Gemini 2.5 Flash integration  
 ✅ Oumi training infrastructure  
 ✅ Custom model fine-tuning ready  
 ✅ Open-source model focus
