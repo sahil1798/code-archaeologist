@@ -263,7 +263,7 @@ export class ExcavatorAgent {
 
     return {
       totalFiles: sourceFiles.length,
-      analyzedFiles: filesToAnalyze.length, // Will be updated
+      analyzedFiles: sourceFiles.length, // Will be updated
       totalCommits: commits.length,
       totalAuthors: authorMap.size,
       languages,

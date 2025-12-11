@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+
 export default function ExcavatePage() {
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
   const router = useRouter();
   const [repoPath, setRepoPath] = useState('');
   const [maxFiles, setMaxFiles] = useState(10);
@@ -18,6 +19,8 @@ export default function ExcavatePage() {
     setError(null);
 
     try {
+      console.log('Calling API:', `${API_URL}/api/excavate`);
+      
       const response = await fetch(`${API_URL}/api/excavate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -27,16 +30,20 @@ export default function ExcavatePage() {
         }),
       });
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
       
       if (data.success) {
-        // Redirect to results page
         router.push(`/results/${data.data.jobId}`);
       } else {
         setError(data.error || 'Failed to start excavation');
       }
     } catch (err: any) {
-      setError(`Failed to connect to API: ${err.message}`);
+      console.error('Fetch error:', err);
+      setError(`Failed to connect to API: ${err.message}. Make sure API server is running at ${API_URL}`);
     } finally {
       setIsLoading(false);
     }
@@ -54,7 +61,6 @@ export default function ExcavatePage() {
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-6 bg-slate-800 p-8 rounded-xl border border-slate-700">
-            {/* Repository Path */}
             <div>
               <label className="block text-sm font-medium mb-2">
                 Repository Path or GitHub URL
@@ -68,11 +74,10 @@ export default function ExcavatePage() {
                 required
               />
               <p className="text-xs text-slate-500 mt-1">
-                Enter a local path or GitHub repository URL
+                Enter a local path (e.g., /home/shank/projects/my-repo)
               </p>
             </div>
 
-            {/* Max Files */}
             <div>
               <label className="block text-sm font-medium mb-2">
                 Maximum Files to Analyze: {maxFiles}
@@ -91,7 +96,6 @@ export default function ExcavatePage() {
               </div>
             </div>
 
-            {/* Skip AI */}
             <div className="flex items-center">
               <input
                 type="checkbox"
@@ -105,14 +109,12 @@ export default function ExcavatePage() {
               </label>
             </div>
 
-            {/* Error Display */}
             {error && (
               <div className="p-4 bg-red-900/20 border border-red-500 rounded-lg">
                 <p className="text-red-400 text-sm">{error}</p>
               </div>
             )}
 
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={isLoading}
@@ -129,19 +131,19 @@ export default function ExcavatePage() {
             </button>
           </form>
 
-          {/* Info Box */}
           <div className="mt-8 p-6 bg-slate-800/50 rounded-lg border border-slate-700">
-            <h3 className="font-semibold mb-2">What happens during excavation?</h3>
-            <ul className="text-sm text-slate-400 space-y-1">
-              <li>✓ Analyzes git commit history</li>
-              <li>✓ Calculates code complexity metrics</li>
-              <li>✓ Extracts dependencies and relationships</li>
-              <li>✓ AI-powered business context extraction</li>
-              <li>✓ Generates knowledge graph</li>
-            </ul>
+            <h3 className="font-semibold mb-2">⚙️ Setup Required</h3>
+            <div className="text-sm text-slate-400 space-y-2">
+              <p>Make sure API server is running:</p>
+              <code className="block bg-slate-900 p-2 rounded">
+                cd ~/projects/code-archaeologist && pnpm run start
+              </code>
+              <p className="text-xs text-slate-500">API: {API_URL}</p>
+            </div>
           </div>
         </div>
       </div>
     </main>
   );
 }
+

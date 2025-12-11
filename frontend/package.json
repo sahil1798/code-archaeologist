@@ -10,12 +10,16 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "d3": "^7.9.0",
+    "date-fns": "^4.1.0",
+    "lucide-react": "^0.559.0",
     "next": "16.0.8",
     "react": "19.2.1",
     "react-dom": "19.2.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/d3": "^7.4.3",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
