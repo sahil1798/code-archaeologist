@@ -37,8 +37,8 @@ interface Report {
     analysis?: {
       summary: string;
       businessContext: string;
-      risks: string[];
-      recommendations: string[];
+      risks: unknown[];  // Can be string[] or object[]
+      recommendations: unknown[];  // Can be string[] or object[]
     };
   }>;
 }
@@ -254,9 +254,79 @@ function InsightCard({ title, items, color = 'purple' }: { title: string; items:
 function FileCard({ file }: { file: Report['files'][0] }) {
   const [expanded, setExpanded] = useState(false);
 
+  // Helper to render a risk item (handles both string and object)
+  const renderRisk = (item: unknown, index: number) => {
+    // Skip empty/null items
+    if (!item) return null;
+
+    // Handle string format
+    if (typeof item === 'string') {
+      const trimmed = item.trim();
+      if (!trimmed) return null;
+      return (
+        <li key={index} className="bg-slate-700/50 p-2 rounded">
+          <span>{trimmed}</span>
+        </li>
+      );
+    }
+
+    // Handle object format {risk, mitigation, severity}
+    if (typeof item === 'object') {
+      const obj = item as { risk?: string; mitigation?: string; severity?: string };
+      if (!obj.risk?.trim()) return null;
+      return (
+        <li key={index} className="bg-slate-700/50 p-2 rounded">
+          <div className="flex items-center gap-2">
+            <span>{obj.risk}</span>
+            {obj.severity && (
+              <span className={`text-xs px-2 py-0.5 rounded ${
+                obj.severity === 'high' ? 'bg-red-500/20 text-red-400' :
+                obj.severity === 'medium' ? 'bg-yellow-500/20 text-yellow-400' :
+                'bg-green-500/20 text-green-400'
+              }`}>
+                {obj.severity}
+              </span>
+            )}
+          </div>
+          {obj.mitigation && (
+            <p className="text-xs text-slate-400 mt-1">💡 {obj.mitigation}</p>
+          )}
+        </li>
+      );
+    }
+
+    return null;
+  };
+
+  // Helper to render a recommendation item (handles both string and object)
+  const renderRecommendation = (item: unknown, index: number) => {
+    // Skip empty/null items
+    if (!item) return null;
+
+    // Handle string format
+    if (typeof item === 'string') {
+      const trimmed = item.trim();
+      if (!trimmed) return null;
+      return <li key={index}>{trimmed}</li>;
+    }
+
+    // Handle object format {recommendation, priority, impact}
+    if (typeof item === 'object') {
+      const obj = item as { recommendation?: string };
+      if (!obj.recommendation?.trim()) return null;
+      return <li key={index}>{obj.recommendation}</li>;
+    }
+
+    return null;
+  };
+
+  // Filter valid items
+  const validRisks = file.analysis?.risks?.map((r, i) => renderRisk(r, i)).filter(Boolean) || [];
+  const validRecommendations = file.analysis?.recommendations?.map((r, i) => renderRecommendation(r, i)).filter(Boolean) || [];
+
   return (
     <div className="bg-slate-800 rounded-lg p-6 border border-slate-700 hover:border-purple-500/50 transition-all">
-      <div 
+      <div
         className="flex items-start justify-between cursor-pointer"
         onClick={() => setExpanded(!expanded)}
       >
@@ -285,31 +355,33 @@ function FileCard({ file }: { file: Report['files'][0] }) {
             <p className="text-sm font-semibold text-purple-400 mb-1">Summary</p>
             <p className="text-slate-300">{file.analysis.summary}</p>
           </div>
-          
+
           <div>
             <p className="text-sm font-semibold text-blue-400 mb-1">Business Context</p>
             <p className="text-slate-300">{file.analysis.businessContext}</p>
           </div>
 
-          {file.analysis.risks.length > 0 && (
+          {validRisks.length > 0 && (
             <div>
               <p className="text-sm font-semibold text-red-400 mb-1">Risks</p>
-              <ul className="list-disc list-inside text-slate-300 text-sm space-y-1">
-                {file.analysis.risks.map((risk, i) => (
-                  <li key={i}>{risk}</li>
-                ))}
+              <ul className="text-slate-300 text-sm space-y-2">
+                {validRisks}
               </ul>
             </div>
           )}
 
-          {file.analysis.recommendations.length > 0 && (
+          {validRecommendations.length > 0 && (
             <div>
               <p className="text-sm font-semibold text-green-400 mb-1">Recommendations</p>
               <ul className="list-disc list-inside text-slate-300 text-sm space-y-1">
-                {file.analysis.recommendations.map((rec, i) => (
-                  <li key={i}>{rec}</li>
-                ))}
+                {validRecommendations}
               </ul>
+            </div>
+          )}
+
+          {validRisks.length === 0 && validRecommendations.length === 0 && (
+            <div className="text-slate-500 text-sm italic">
+              ✅ No significant risks or recommendations identified.
             </div>
           )}
         </div>
